@@ -182,7 +182,7 @@ if (!chapters[chapters.length - 1]) {
 
 allRow.forEach(item => {
     item.forEach(element =>{
-        console.log(element[0]);
+        console.log(element[0]); // <- ТУТ ТУТУТУТТУТУТ <<<<<<<<<<<<<<<<<<<<АААААААААААААААААААААААААа
     })
 })
 
