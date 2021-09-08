@@ -48,7 +48,9 @@ weeksCount.pop();
 
 var rowInputGroup = []; // строки с input'ами
 var colInputGroup = []; // столбцы с input'ами
+var temporaryArray = [];
 
+//Создание строк для инпутов
 for (let index = 0; index < studentsCount; index++) {
     var rowInput = document.createElement('div');
     rowInput.classList = 'row w-100 m-0 py-2 border-bottom rowInput';
@@ -56,30 +58,28 @@ for (let index = 0; index < studentsCount; index++) {
     document.querySelector('#tableCol').appendChild(rowInput);
 }
 
+//Создание инпутов
 for (let index = 0; index < rowInputGroup.length; index++) {
-    var temporaryArray = [];
-    for (let index2 = 0; index2 < weeksCount.length; index2++) {
+    for (let index2 = 0; index2 < weeksCount.length - 1; index2++) {
         var colInput = document.createElement('input');
-        colInput.classList = 'col-1 text-center border';
+        colInput.classList = 'col-1 text-center border d-none';
         colInput.setAttribute('maxlength', '1');
         temporaryArray.push(colInput);
         rowInputGroup[index].appendChild(colInput);
     }
     colInputGroup.push(temporaryArray);
+    temporaryArray = [];
 }
 
-console.log(colInputGroup)
-
 /*---------------------------------------------------------------------------------------------*/
-
-
 
 
 var chapters = [];
 var start = 0;
 
+var pagInputRow = [];
 
-
+var allRow = []
 
 if (gadgetType == 'PC') {
     while (start <= weeksCountObj.length) {
@@ -96,6 +96,24 @@ if (gadgetType == 'PC') {
 }
 
 
+if (gadgetType == 'PC') {
+    while (start <= weeksCountObj.length) {
+        if (colInputGroup[0].length == 0) {
+            break;
+        }
+        if (colInputGroup[0].length < 4) {
+            pagInputRow.push(colInputGroup[0].splice(0));
+        } else {
+            pagInputRow.push(colInputGroup[0].splice(0, 12));
+        }
+        start++;
+    }
+}
+
+for (let index = 0; index < studentsCount; index++) {
+    allRow.push(pagInputRow.slice());
+}
+
 
 if (gadgetType == 'tablet') {
     while (start <= weeksCountObj.length) {
@@ -106,6 +124,21 @@ if (gadgetType == 'tablet') {
             chapters.push(weeksCount.splice(0, weeksCount.length));
         } else {
             chapters.push(weeksCount.splice(0, 6));
+        }
+        start++;
+    }
+}
+
+if (gadgetType == 'tablet') {
+    while (start <= weeksCountObj.length) {
+        if (colInputGroup[0].length == 0) {
+            allRow.push(pagInputRow);
+            break;
+        }
+        if (colInputGroup[0].length < 4) {
+            pagInputRow.push(colInputGroup[0].splice(0));
+        } else {
+            pagInputRow.push(colInputGroup[0].splice(0, 6));
         }
         start++;
     }
@@ -125,30 +158,50 @@ if (gadgetType == 'smarthphone') {
     }
 }
 
+if (gadgetType == 'smarthphone') {
+    while (start <= weeksCountObj.length) {
+        if (colInputGroup[0].length == 0) {
+            allRow.push(pagInputRow);
+            break;
+        }
+        if (colInputGroup[0].length < 4) {
+            pagInputRow.push(colInputGroup[0].splice(0));
+        } else {
+            pagInputRow.push(colInputGroup[0].splice(0, 4));
+        }
+        start++;
+    }
+}
+
+
 chapters[chapters.length - 1].pop();
 
 if (!chapters[chapters.length - 1]) {
     chapters.pop();
 }
 
+allRow.forEach(item => {
+    item.forEach(element =>{
+        console.log(element[0]);
+    })
+})
 
-
-
+pagInputRow[currentPage].forEach(element => {
+    element.className = customClass + '  text-center border';
+})
 
 chapters[currentPage].forEach(element => {
     element.className = customClass + '  text-center border';
 });
 
-
-
-
-
-
-
 pagNext.addEventListener('click', function () {
     chapters[currentPage].forEach(element => {
         element.className = customClass + ' text-center border d-none';
     });
+
+    pagInputRow[currentPage].forEach(element => {
+        element.className = customClass + '  text-center border d-none';
+    })
 
     currentPage++;
 
@@ -161,12 +214,20 @@ pagNext.addEventListener('click', function () {
             element.className = customClass + ' text-center border';
         });
 
+        pagInputRow[currentPage].forEach(element => {
+            element.className = customClass + '  text-center border';
+        })
+
         pagNext.setAttribute('disabled', '');
 
     } else {
         chapters[currentPage].forEach(element => {
             element.className = customClass + ' text-center border';
         });
+
+        pagInputRow[currentPage].forEach(element => {
+            element.className = customClass + '  text-center border';
+        })
     }
 });
 
@@ -174,6 +235,10 @@ pagPrev.addEventListener('click', function () {
     chapters[currentPage].forEach(element => {
         element.className = customClass + ' text-center border d-none';
     });
+
+    pagInputRow[currentPage].forEach(element => {
+        element.className = customClass + '  text-center border d-none';
+    })
 
     currentPage--;
 
@@ -187,12 +252,20 @@ pagPrev.addEventListener('click', function () {
             element.className = customClass + ' text-center border';
         });
 
+        pagInputRow[currentPage].forEach(element => {
+            element.className = customClass + '  text-center border';
+        })
+
         pagPrev.setAttribute('disabled', '');
 
     } else {
         chapters[currentPage].forEach(element => {
             element.className = customClass + ' text-center border';
         });
+
+        pagInputRow[currentPage].forEach(element => {
+            element.className = customClass + '  text-center border';
+        })
     }
 });
 
