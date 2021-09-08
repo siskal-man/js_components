@@ -105,7 +105,7 @@
                         ФИО:
                     </div>
                 </div>
-                <div class="row m-0">
+                <div class="row m-0" id="students-count">
                     <div class="row m-0 py-2">
                         Ибрагимов Ислам Магомедович
                     </div>
@@ -157,20 +157,9 @@
                     <div class="col-1 text-center border d-none">36</div>
                     <div class="col-1 text-center border d-none">37</div>
                 </div>
-                <div class="row w-100 m-0 py-2 border-bottom" id="">
-                    <!-- <input class="col-1 text-center border" maxlength="1" type="text">
-                    <input class="col-1 text-center border" maxlength="1" type="text">
-                    <input class="col-1 text-center border" maxlength="1" type="text">
-                    <input class="col-1 text-center border" maxlength="1" type="text">
-                    <input class="col-1 text-center border" maxlength="1" type="text">
-                    <input class="col-1 text-center border" maxlength="1" type="text">
-                    <input class="col-1 text-center border" maxlength="1" type="text">
-                    <input class="col-1 text-center border" maxlength="1" type="text">
-                    <input class="col-1 text-center border" maxlength="1" type="text">
-                    <input class="col-1 text-center border" maxlength="1" type="text">
-                    <input class="col-1 text-center border" maxlength="1" type="text">
-                    <input class="col-1 text-center border" maxlength="1" type="text"> -->
-                </div>
+                <!-- <div class="row w-100 m-0 py-2 border-bottom">
+                    
+                </div> -->
             </div>
         </div>
     </div>
