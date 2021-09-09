@@ -4,7 +4,7 @@ function div(val, by) {
 
 /* resize */
 var gadgetType = null;
-var customClass = ' col-1 ';
+var customClass = 'col-1 ';
 
 if (document.documentElement.scrollWidth >= 320 && document.documentElement.scrollWidth <= 768) {
     gadgetType = 'smarthphone';
@@ -46,40 +46,36 @@ weeksCount.pop();
 
 /* input group */
 
-var rowInputGroup = []; // строки с input'ами
-var colInputGroup = []; // столбцы с input'ами
-var temporaryArray = [];
+var rowStorage = null;
+var colsInRow = [];
+var cols = [];
+var chaptersCol = [];
+var final = [];
 
 //Создание строк для инпутов
 for (let index = 0; index < studentsCount; index++) {
-    var rowInput = document.createElement('div');
-    rowInput.classList = 'row w-100 m-0 py-2 border-bottom rowInput';
-    rowInputGroup.push(rowInput);
-    document.querySelector('#tableCol').appendChild(rowInput);
-}
 
-//Создание инпутов
-for (let index = 0; index < rowInputGroup.length; index++) {
-    for (let index2 = 0; index2 < weeksCount.length - 1; index2++) {
-        var colInput = document.createElement('input');
-        colInput.classList = 'col-1 text-center border d-none';
-        colInput.setAttribute('maxlength', '1');
-        temporaryArray.push(colInput);
-        rowInputGroup[index].appendChild(colInput);
+    var row = document.createElement('div');
+    row.classList = 'row w-100 m-0 py-2 border-bottom rowInput';
+    rowStorage = row;
+    document.querySelector('#tableCol').appendChild(row);
+
+    for (let index = 0; index < weeksCountObj.length; index++) {
+        var col = document.createElement('input');
+        col.classList = 'col-1 text-center border d-none';
+        col.setAttribute('maxlength', '1');
+        rowStorage.appendChild(col);
+        colsInRow.push(col);
     }
-    colInputGroup.push(temporaryArray);
-    temporaryArray = [];
+
+    cols.push(colsInRow);
+    colsInRow = [];
 }
 
-/*---------------------------------------------------------------------------------------------*/
-
+// //////////////////////////////////////////////////////////////
 
 var chapters = [];
 var start = 0;
-
-var pagInputRow = [];
-
-var allRow = []
 
 if (gadgetType == 'PC') {
     while (start <= weeksCountObj.length) {
@@ -93,25 +89,23 @@ if (gadgetType == 'PC') {
         }
         start++;
     }
-}
 
 
-if (gadgetType == 'PC') {
-    while (start <= weeksCountObj.length) {
-        if (colInputGroup[0].length == 0) {
-            break;
+    for (let index = 0; index < cols.length; index++) {
+        var start = 0;
+        while (cols[index].length >= 0) {
+            if (cols[index].length == 0) {
+                final.push(chaptersCol);
+                chaptersCol = [];
+                break;
+            }
+            if (cols[index].length < 4) {
+                chaptersCol.push(cols[index].splice(0));
+            } else {
+                chaptersCol.push(cols[index].splice(0, 12));
+            }
         }
-        if (colInputGroup[0].length < 4) {
-            pagInputRow.push(colInputGroup[0].splice(0));
-        } else {
-            pagInputRow.push(colInputGroup[0].splice(0, 12));
-        }
-        start++;
     }
-}
-
-for (let index = 0; index < studentsCount; index++) {
-    allRow.push(pagInputRow.slice());
 }
 
 
@@ -127,20 +121,22 @@ if (gadgetType == 'tablet') {
         }
         start++;
     }
-}
 
-if (gadgetType == 'tablet') {
-    while (start <= weeksCountObj.length) {
-        if (colInputGroup[0].length == 0) {
-            allRow.push(pagInputRow);
-            break;
+
+    for (let index = 0; index < cols.length; index++) {
+        var start = 0;
+        while (cols[index].length >= 0) {
+            if (cols[index].length == 0) {
+                final.push(chaptersCol);
+                chaptersCol = [];
+                break;
+            }
+            if (cols[index].length < 4) {
+                chaptersCol.push(cols[index].splice(0));
+            } else {
+                chaptersCol.push(cols[index].splice(0, 6));
+            }
         }
-        if (colInputGroup[0].length < 4) {
-            pagInputRow.push(colInputGroup[0].splice(0));
-        } else {
-            pagInputRow.push(colInputGroup[0].splice(0, 6));
-        }
-        start++;
     }
 }
 
@@ -156,23 +152,23 @@ if (gadgetType == 'smarthphone') {
         }
         start++;
     }
-}
 
-if (gadgetType == 'smarthphone') {
-    while (start <= weeksCountObj.length) {
-        if (colInputGroup[0].length == 0) {
-            allRow.push(pagInputRow);
-            break;
+    for (let index = 0; index < cols.length; index++) {
+        var start = 0;
+        while (cols[index].length >= 0) {
+            if (cols[index].length == 0) {
+                final.push(chaptersCol);
+                chaptersCol = [];
+                break;
+            }
+            if (cols[index].length < 4) {
+                chaptersCol.push(cols[index].splice(0));
+            } else {
+                chaptersCol.push(cols[index].splice(0, 4));
+            }
         }
-        if (colInputGroup[0].length < 4) {
-            pagInputRow.push(colInputGroup[0].splice(0));
-        } else {
-            pagInputRow.push(colInputGroup[0].splice(0, 4));
-        }
-        start++;
     }
 }
-
 
 chapters[chapters.length - 1].pop();
 
@@ -180,28 +176,28 @@ if (!chapters[chapters.length - 1]) {
     chapters.pop();
 }
 
-allRow.forEach(item => {
-    item.forEach(element =>{
-        console.log(element[0]); // <- ТУТ ТУТУТУТТУТУТ <<<<<<<<<<<<<<<<<<<<АААААААААААААААААААААААААа
-    })
-})
-
-pagInputRow[currentPage].forEach(element => {
-    element.className = customClass + '  text-center border';
-})
 
 chapters[currentPage].forEach(element => {
     element.className = customClass + '  text-center border';
 });
 
+final.forEach(el => {
+    el[currentPage].forEach(subEl => {
+        subEl.className = customClass + '  text-center border';
+    })
+})
+
+
 pagNext.addEventListener('click', function () {
     chapters[currentPage].forEach(element => {
         element.className = customClass + ' text-center border d-none';
-    });
 
-    pagInputRow[currentPage].forEach(element => {
-        element.className = customClass + '  text-center border d-none';
-    })
+        final.forEach(el => {
+            el[currentPage].forEach(subEl => {
+                subEl.className = customClass + '  text-center border d-none';
+            })
+        })
+    });
 
     currentPage++;
 
@@ -214,8 +210,10 @@ pagNext.addEventListener('click', function () {
             element.className = customClass + ' text-center border';
         });
 
-        pagInputRow[currentPage].forEach(element => {
-            element.className = customClass + '  text-center border';
+        final.forEach(el => {
+            el[currentPage].forEach(subEl => {
+                subEl.className = customClass + '  text-center border';
+            })
         })
 
         pagNext.setAttribute('disabled', '');
@@ -225,9 +223,12 @@ pagNext.addEventListener('click', function () {
             element.className = customClass + ' text-center border';
         });
 
-        pagInputRow[currentPage].forEach(element => {
-            element.className = customClass + '  text-center border';
+        final.forEach(el => {
+            el[currentPage].forEach(subEl => {
+                subEl.className = customClass + '  text-center border';
+            })
         })
+
     }
 });
 
@@ -236,8 +237,10 @@ pagPrev.addEventListener('click', function () {
         element.className = customClass + ' text-center border d-none';
     });
 
-    pagInputRow[currentPage].forEach(element => {
-        element.className = customClass + '  text-center border d-none';
+    final.forEach(el => {
+        el[currentPage].forEach(subEl => {
+            subEl.className = customClass + '  text-center border d-none';
+        })
     })
 
     currentPage--;
@@ -252,8 +255,10 @@ pagPrev.addEventListener('click', function () {
             element.className = customClass + ' text-center border';
         });
 
-        pagInputRow[currentPage].forEach(element => {
-            element.className = customClass + '  text-center border';
+        final.forEach(el => {
+            el[currentPage].forEach(subEl => {
+                subEl.className = customClass + '  text-center border';
+            })
         })
 
         pagPrev.setAttribute('disabled', '');
@@ -263,8 +268,10 @@ pagPrev.addEventListener('click', function () {
             element.className = customClass + ' text-center border';
         });
 
-        pagInputRow[currentPage].forEach(element => {
-            element.className = customClass + '  text-center border';
+        final.forEach(el => {
+            el[currentPage].forEach(subEl => {
+                subEl.className = customClass + '  text-center border';
+            })
         })
     }
 });
